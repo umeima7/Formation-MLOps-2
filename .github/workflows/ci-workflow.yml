@@ -52,7 +52,7 @@ jobs:
           pip install behave
 
       - name: Run Functional Tests (Behave)
-        run: behave tests/functional
+        run: behave tests/test_functional/features
 
   quality:
     runs-on: ubuntu-latest
