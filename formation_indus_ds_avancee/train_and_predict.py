@@ -19,7 +19,14 @@ def train_model(features: pd.DataFrame, model_registry_folder: str) -> None:
     model = RandomForestRegressor(n_estimators=1, max_depth=10, n_jobs=1)
     model.fit(X, y)
     joblib.dump(model, os.path.join(model_registry_folder, 'model.joblib'))
+    # Création d'un nom unique avec timestamp
+    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    model_filename = f'model_{timestamp}.joblib'
+    model_path = os.path.join(model_registry_folder, model_filename)
 
+    joblib.dump(model, model_path)
+    print(f"Model saved at: {model_path}")
+    return model_path
 
 def predict_with_io(features_path: str, model_path: str, predictions_folder: str) -> None:
     features = pd.read_parquet(features_path)
@@ -34,4 +41,4 @@ def predict_with_io(features_path: str, model_path: str, predictions_folder: str
 def predict(features: pd.DataFrame, model_path: str) -> pd.DataFrame:
     model = joblib.load(model_path)
     features['predictions'] = model.predict(features)
-    return features
+    return features 
